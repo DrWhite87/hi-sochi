@@ -1,0 +1,698 @@
+body {
+    font: 12px/1.4 Tahoma, sans;
+    background: #e0d89c;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+/* ~~ Селекторы элементов/тегов ~~ */
+ul, ol, dl { /* Из-за различий между браузерами рекомендуется обнулять поля в списках. Для согласованности можно указать нужные величины либо здесь, либо в элементах списка (LI, DT, DD), которые они содержат. Помните, что сделанное здесь последовательно включается в список .nav, если только не будет прописан более конкретный селектор. */
+    padding: 0;
+    margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;	 /* удаление верхнего поля позволяет обойти проблему выхода полей за границы содержащего их контейнера DIV. Оставшееся нижнее поле отделит его от любых последующих элементов. */
+    padding: 0;	
+}
+a img { /* этот селектор убирает стандартную синюю рамку, которая появляется у изображений в некоторых браузерах, если вокруг изображения есть ссылка */
+    border: none;
+}
+
+/* ~~ Оформление ссылок на вашем сайте должно оставаться в этом порядке, включая группу селекторов, создающих эффект наведения. ~~ */
+a:link {
+    color:#414958;
+    text-decoration: underline; /* если только ссылки не должны выглядеть исключительно своеобразно, то для быстрого зрительного распознавания рекомендуется использовать подчеркивание */
+}
+a:visited {
+    color: #4E5869;
+    text-decoration: underline;
+}
+a:hover, a:active, a:focus { /* эта группа селекторов обеспечивает пользователю, работающему с клавиатурой, такие же возможности наведения, как и при использовании мыши. */
+    text-decoration: none;
+}
+
+/* ~~ этот контейнер окружает все остальные контейнеры DIV, задавая их ширину на процентной основе ~~ */
+.container {
+    width: 937px;	
+    background: #FFF;
+    margin: 0 auto; 
+    overflow: hidden;	
+    box-shadow: 0 0 10px #5f1338;
+}
+
+/* ~~ верхнему колонтитулу не задана ширина. Он растянется на всю ширину макета. Он содержит заполнитель для изображения, который должен быть заменен логотипом по ссылке ~~ */
+.header {
+    background: url('../images/header_bg.jpg');
+    height: 109px;
+}
+
+/* ~~ Столбцы для макета. ~~ */
+
+.sidebar1 {
+    float: right;
+    width: 278px;
+    background: #FFF;
+    margin:15px 25px 4px 0;
+    padding-bottom: 10px;
+    /*border: #960402 solid 4px;*/
+}
+.content {
+    padding: 0;
+    margin: 15px 20px; 
+    width: 590px;
+    float: right;
+    min-height: 500px;
+}
+
+.content p{
+    padding: 5px 0;
+}
+/* ~~ Этот сгруппированный селектор выдает списки в пространстве .content ~~ */
+/*.content ul, .content ol { 
+    padding: 0 15px 15px 40px;
+}*/
+
+/* ~~ Стили списка навигации (можно убрать, если решено использовать готовое подменю, например Spry) ~~ */
+ul.nav {
+    list-style: none; /* удаляет маркер списка */
+    border-top: 1px solid #666; /* создает верхнюю границу ссылок — все остальные размещаются с использованием нижней границы в LI */
+    margin-bottom: 15px; /* создает пространство между навигацией по содержимому ниже */
+}
+ul.nav li {
+    border-bottom: 1px solid #666; /* разделяет кнопки */
+}
+ul.nav a, ul.nav a:visited { /* группировка этих селекторов гарантирует, что ссылки будут выглядеть как кнопки даже после того, как пользователь перейдет по ним */
+    padding: 5px 5px 5px 15px;
+    display: block; /* наделяет ссылку свойствами блока, из-за чего она заполняет весь содержащий ее элемент LI. При этом вся область реагирует на щелчок мышью. */
+    text-decoration: none;
+    background: #8090AB;
+    color: #000;
+}
+ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* изменяет цвет текста и фона при навигации с помощью клавиатуры и мыши */
+    background: #6F7D94;
+    color: #FFF;
+}
+
+/* ~~ Нижний колонтитул ~~ */
+.footer {
+    padding: 10px 20px;
+    background: #6e8d32;
+    position: relative;/* IE6 получает hasLayout для правильной очистки */
+    clear: both; /* это свойство очистки заставляет .container видеть место окончания столбцов и включать их */
+    width: 897px;
+    margin: 0 auto; 
+    height: 100px;
+}
+
+/* ~~ прочие классы float/clear ~~ */
+.fltrt {  /* этот класс можно использовать для обтекания элемента справа на странице. Обтекаемый элемент должен предшествовать элементу, с которым он должен находиться рядом на странице. */
+    float: right;
+    margin-left: 8px;
+}
+.fltlft { /* этот класс можно использовать для обтекания элемента слева на странице. Обтекаемый элемент должен предшествовать элементу, с которым он должен находиться рядом на странице. */
+    float: left;
+    margin-right: 8px;
+}
+.clearfloat { /* этот класс можно поместить в теге <br /> или в пустом блоке DIV в качестве конечного элемента, следующего за последним обтекаемым DIV (внутри #container), если .#footer удален или извлечен из #container */
+    clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+
+/* pagination */
+
+.pagination-box{
+    text-align: center;
+}
+
+.pagination {
+    height: 40px;
+    margin: 20px 0;
+}
+
+ul.pagination {
+    display: inline-block;
+    *display: inline;
+    margin-bottom: 0;
+    margin-left: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    *zoom: 1;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+ul.pagination > li {
+    display: inline;
+}
+
+ul.pagination > li > a,
+ul.pagination > li > span {
+    float: left;
+    padding: 0 14px;
+    line-height: 38px;
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-left-width: 0;
+}
+
+ul.pagination > li > a:hover,
+ul.pagination > .active > a,
+ul.pagination > .active > span {
+    background-color: #f5f5f5;
+}
+
+ul.pagination > .active > a,
+ul.pagination > .active > span {
+    color: #999999;
+    cursor: default;
+}
+
+ul.pagination > .disabled > span,
+ul.pagination > .disabled > a,
+ul.pagination > .disabled > a:hover {
+    color: #999999;
+    cursor: default;
+    background-color: transparent;
+}
+
+ul.pagination > li:first-child > a,
+ul.pagination > li:first-child > span {
+    border-left-width: 1px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+}
+
+ul.pagination > li:last-child > a,
+ul.pagination > li:last-child > span {
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.pagination-centered {
+    text-align: center;
+}
+
+.pagination-right {
+    text-align: right;
+}
+
+
+/* header */
+
+.lang{
+    width: 60px;
+    background-color: #374368;
+    color: #FFF;
+    height: 17px;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-top: 8px;
+    float: right;
+}
+
+.lang a{
+    color: #FFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+/* menu */
+
+.menu{
+    height: 40px;
+    background-color: #6e8d32;
+}
+
+.menu ul{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    margin-left: 31px;	
+}
+
+.menu ul li{
+    float:left;
+}
+
+.menu ul li a{	
+    padding:10px 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #FFF;
+    display: block;
+}
+
+.menufooter{
+    height: 40px;
+    background-color: #6e8d32;
+
+}
+
+.menufooter ul{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    margin-left: 10px;      
+}
+
+.menufooter ul li{
+    float:left;
+}
+
+.menufooter ul li a{    
+    margin:5px 30px;
+    font-family: Myriad Pro;
+    font-weight: bold;
+    font-size: 15px;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.footer a{
+    text-decoration: underline;
+    color: #fff;
+}
+
+/* copyright */
+
+.copyright{
+    float:left;
+    padding:5px 15px;
+}
+
+
+/* search */
+
+.search-box{
+    height: 36px;
+    background-color: #84a93c;
+    font-weight: bold;
+    font-size: 14px;
+    color: #FFF;
+    padding-left: 16px;	
+}
+
+.search{
+    margin: 0 auto;
+    width: 666px;
+    padding-top: 5px;
+}
+
+.search input{
+    width: 500px;
+    padding: 2px 5px;
+}
+
+.search img{
+    vertical-align: middle;
+    margin-top: -3px;
+    margin-left: 5px;
+    cursor: pointer;
+    border: 1px solid #fff;
+    width: 21px;
+}
+
+/* Слайдер */
+
+.content #slider{
+    width: 580px;
+    height: 280px;
+    border: #c34a0b solid 4px;
+}
+
+#slider .slider-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #c34a0b;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+#slider .slider-main-img{
+    width: 330px;
+    height: 100%;
+    float: left;
+}
+
+#slider .slider-main{
+    float: left;
+    width: 330px;
+}
+
+#slider .slider-main img{
+    width: 330px;
+    height: 166px;
+}
+
+#slider .slider-main-box{
+    width: 310px;
+    background-color: #c34a0b;
+    color: #FFF;
+    padding: 10px;
+    height: 70px;
+    margin-top: -3px
+}
+
+#slider .slider-main-box a{
+    color: #FFF;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#slider .slider-main-anons{
+    color: #FFF;
+    margin-top: 4px;
+}
+
+#slider .slider-other{
+    float: left;
+    width: 250px;
+}
+#slider .slider-other ul{
+    list-style-type: none;
+    margin: -3px 5px 0 5px;
+    padding: 0;
+}
+
+#slider .slider-other ul li{
+    margin: 7px 0;
+}
+
+#slider .slider-other ul li a{
+    color: #4a4a4a;
+    text-decoration: none;
+}
+
+#slider .slider-other-title{
+    float: right;
+    width: 158px;
+}
+
+/* now */
+
+.content .now{
+    width: 580px;
+    border: #374368 solid 4px;
+    margin-top: 25px;
+    overflow: hidden;
+}
+
+.now .now-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #374368;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.now ul{
+    list-style-type: none;
+    margin: 5px 10px 15px;
+    padding: 0;
+}
+
+.now .now-news-box{
+    margin: 4px 10px 10px 6px;
+}
+
+.now .now-news-box a{
+    float: left;
+}
+
+.now .now-news-title{
+    margin-top: 5px;
+}
+
+.now .now-news-title a{
+    font-size: 18px;
+    color: #374368;
+}
+
+.now .now-news-img-box{
+    width: 160px;
+    height: 122px;
+    overflow: hidden;
+    float: left;
+}
+
+.now .now-news-anons{
+    float: right;
+    width: 374px;
+    text-align: justify;
+    position: relative;
+    height: 125px;
+}
+
+.now .now-news-all{
+    right: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.now .now-news-all a{
+    color: #374368;
+}
+
+.now ul li{
+    overflow: hidden;
+}
+
+.now ul li.line{
+    border-bottom: 1px #c8c8c8 dotted;
+    margin: 20px 10px 0 6px;
+}
+
+
+/* slidebar */
+
+.afisha,
+.prognoz,
+.kurs,
+.new,
+.social,
+.podpiska{
+    border: 4px solid #960402;
+    /*border-bottom: 2px solid #e0d89c;*/
+    /*min-height: 150px;*/
+    margin:0 0 18px;
+    text-align: center;
+    position: relative;
+}
+
+.afisha-title,
+.prognoz-title,
+.kurs-title,
+.new-title,
+.social-title,
+.podpiska-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #960402;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.social{
+    border: 4px solid #5B7FA6;
+}
+
+.prognoz{
+    border: 4px solid #E48D0A;
+}
+
+.social-title{
+    background-color: #5B7FA6;
+}
+
+.prognoz-title{
+    background-color: #E48D0A;
+}
+
+/* news Index */
+
+.content .news-index{
+    width: 580px;
+    border: #374368 solid 4px;
+    overflow: hidden;
+}
+
+.news-index .news-index-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #374368;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.news-index .news-index-anons-img{
+    width: 160px;
+}
+
+.news-index .news-view-index-img-box{
+    width: 160px;
+    height: 122px;
+    overflow: hidden;
+    float: left;
+}
+
+.news-index ul{
+    list-style-type: none;
+    margin: 5px 10px 15px;
+    padding: 0;
+}
+
+.news-index .news-index-news-box{
+    margin: 4px 10px 10px 6px;
+}
+
+.news-index .news-index-news-box a{
+    float: left;
+}
+
+.news-index .news-index-news-title{
+    margin-top: 5px;
+}
+
+.news-index .news-index-news-title a{
+    font-size: 18px;
+    color: #374368;
+}
+
+.news-index .news-index-news-anons{
+    float: right;
+    width: 374px;
+    text-align: justify;
+    position: relative;
+    height: 125px;
+}
+
+.news-index .news-index-news-all{
+    right: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.news-index .news-index-news-all a{
+    color: #374368;
+}
+
+.news-index ul li{
+    overflow: hidden;
+}
+
+.news-index ul li.line{
+    border-bottom: 1px #c8c8c8 dotted;
+    margin: 20px 10px 0 6px;
+}
+
+
+/* news view */
+
+.content .news-view {
+    width: 580px;
+    border: #374368 solid 4px;
+    /* margin-top: 25px; */
+    overflow: hidden;
+}
+
+.news-view .news-view-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #374368;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.news-view .news-view-news-content {
+    text-align: justify;
+    position: relative;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.news-view .news-view-content-img{
+    width: 160px;
+    float: left;
+    margin: 0 10px 5px 0;
+}
+
+/* comments */
+
+.news-comments .news-comment-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #84a93c;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.news-comments{
+    margin: 10px;
+    border: 3px solid #84a93c;    
+}
+
+.news-comment-box{
+    padding: 10px;
+}
+
+.news-comment-form{
+    border: 2px solid burlywood;
+    margin: 10px;
+}
+
+.news-comment-form form{
+    padding: 0 10px 10px;
+}
+
+.news-comment-form .news-comment-form-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: burlywood;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+
+.news-comment-form label{
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.news-comment-form .required > label{
+    font-weight: bold;
+}
+
+.news-comment-form textArea{
+    padding: 0;
+    width: 100%;
+    height: 150px;
+}
+
+.news-comment-form .news-comment-submit{
+    text-align: right;
+}
+
+.news-comment-content{
+    padding: 10px;
+    background: #eee;
+}
+
+.errors-validate{
+    background-color: #ffc8aa;
+    padding: 10px;
+    margin: 10px;
+    color: #c70013;
+    display: none;
+}
+
+.margin_10_0{
+    margin: 10px 0; 
+}
