@@ -46,13 +46,15 @@ $config = [
                 '/comment/<module:\w+>/<id:\d+>' => 'comment/comment/index',
                 '/comment/add/<module:\w+>/<id:\d+>' => 'comment/comment/add',
                 /* новости */
-                '/news' => 'news/news/index',
-                '/news/ajaxaddcomment/<news_id:\d+>' => 'news/news/ajaxaddcomment',
-                '/news/ajaxcommentlist' => 'news/news/ajaxcommentlist',
+                '/news' => 'news/news/index',               
                 '/news/<alias:[-\w]+>.html' => 'news/news/view',  
                 
+                /* события */    
+                '/afisha' => 'event/event/index',                
+                '/afisha/<alias:[-\w]+>.html' => 'event/event/view',  
+                
                            
-                 /* события */    
+                 /* события админка*/    
                 '/admin/events/<category:\w+>' => 'event/admin/index',
                 '/admin/event/<category:\w+>/<action:\w+>' => 'event/admin/<action>',
                 '/admin/event/<category:\w+>/<action:\w+>/<id:\d+>' => 'event/admin/<action>',

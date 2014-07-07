@@ -2,7 +2,7 @@
     <?= \yii\helpers\Html::label($attr->name)?>
     <?= 
     \app\components\extentions\imperavi\Widget::widget([
-        'name' => 'Event[moreAttributes][' . $attr->alias . ']',
+        'name' => 'Event[eavAttributes][' . $attr->alias . ']',
         'value' => $attr->value,
         'settings' => [
             'lang' => 'ru',

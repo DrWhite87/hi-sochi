@@ -16,8 +16,7 @@ class AdminController extends MyAdminController {
     public function init() {
         parent::init();
         $this->model = new Event;
-        $this->searchModel = new Search;
-        $this->module->setViewPath(Yii::getAlias('@app') . '\views\event');
+        $this->searchModel = new Search;        
     }
 
     public function actionIndex($category) {
@@ -28,7 +27,7 @@ class AdminController extends MyAdminController {
         $searchModel = $this->searchModel;
         $dataProvider = $searchModel->search(['Search' => $search]);
 
-        return $this->render('index', [
+        return $this->render('/index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'categoryModel' => $categoryModel,
@@ -43,16 +42,19 @@ class AdminController extends MyAdminController {
     public function actionCreate($category) {
         $model = new $this->model;
         $model->category_id = \app\modules\event\models\EventCategory::findOne(['alias' => $category])->id;
-
-        if ($model->load(Yii::$app->request->post())) {
-
-            if ($model->save())
-                return $this->redirect('admin/events/' . $category);
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect('admin/events/' . $category);
         } else {
-            return $this->render('create', [
+            
+            //print_r($model->errors);
+            
+            return $this->render('/create', [
                         'model' => $model,
+                        'category' => $category,
             ]);
         }
+        
     }
 
     /**
@@ -68,14 +70,14 @@ class AdminController extends MyAdminController {
 //            $transaction = Yii::$app->db->beginTransaction();
 //            if ($model->save()) {
 //                $transaction2 = \Yii::$app->db->beginTransaction();
-//                $arrtErrors = \app\modules\event\models\EventAttribute::saveValue($model->moreAttributes, $model->id);
+//                $arrtErrors = \app\modules\event\models\EventAttribute::saveValue($model->eavAttributes, $model->id);
 //                if ($arrtErrors === TRUE) {
 //                    $transaction2->commit();
 //                    $transaction->commit();
 //                    return $this->redirect('admin/events/' . $category);
 //                } else {
 //                    $transaction2->rollBack();
-//                    $model->addError('moreAttributes', $arrtErrors);
+//                    $model->addError('eavAttributes', $arrtErrors);
 //                }
 //            } else {
 //                $transaction->rollBack();
@@ -93,7 +95,7 @@ class AdminController extends MyAdminController {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('admin/events/' . $category);
         } else {
-            return $this->render('update', [
+            return $this->render('/update', [
                         'model' => $model,
                         'category' => $category,
             ]);

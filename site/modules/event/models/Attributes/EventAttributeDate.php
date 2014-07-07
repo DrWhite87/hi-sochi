@@ -9,7 +9,7 @@ class EventAttributeDate extends EventAttributeInt {
     public function behaviors() {
         return [
             'BETime' => [
-                'class' => BETimeBehavior::className(),
+                'class' => \app\components\behaviors\BETimeBehavior::className(),
                 'attributes' => ['value'],
             ],
         ];

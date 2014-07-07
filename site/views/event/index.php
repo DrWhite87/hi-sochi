@@ -1,12 +1,23 @@
-<div class="event-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
-</div>
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ListView;
+use yii\grid\GridView;
+
+/**
+ * @var yii\web\View $this
+ * @var yii\data\ActiveDataProvider $dataProvider
+ * @var app\modules\news\models\Search $searchModel
+ */
+$this->title = Yii::t('frontend', 'Event');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
+<?= 
+    ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemView' => '_item_view',
+        'layout' => $this->render('_list_view',array(),true),
+        'pager' => ['options' => ['class' => 'pagination']]
+    ]);
+?>

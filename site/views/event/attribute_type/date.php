@@ -1,0 +1,1 @@
+<p><b><?= $attr->name ?>:</b> <?= date('d.m.Y', $attr->value) ?>г.</p>

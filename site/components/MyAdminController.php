@@ -19,15 +19,14 @@ use yii\filters\AccessControl;
  */
 class MyAdminController extends Controller {
     
-    public $layout = 'page_column2';
-    
     public $model;
     public $searchModel;
     
     public function init() {
         parent::init();
         Yii::$app->errorHandler->errorAction = 'page/admin/error';        
-        $this->module->setLayoutPath(Yii::getAlias('@app') . '\views\layouts');
+        $this->module->setLayoutPath(Yii::getAlias('@app') . '\modules\admin\views\layouts');        
+        $this->module->setViewPath(Yii::getAlias('@app') . '\modules\\' . $this->module->id . '\views');
         $this->layout = 'admin';
     }
     
@@ -96,7 +95,7 @@ class MyAdminController extends Controller {
         
         $dataProvider = $searchModel->search($param);
 
-        return $this->render('index', [
+        return $this->render('/index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
         ]);
@@ -110,7 +109,7 @@ class MyAdminController extends Controller {
             return $this->redirect('admin/' . $this->module->id);
         } else {           
             print_r($model->errors);
-            return $this->render('create', [
+            return $this->render('/create', [
                         'model' => $model,
             ]);
         }
@@ -124,7 +123,7 @@ class MyAdminController extends Controller {
             return $this->redirect('admin/' . $this->module->id);
         } else {
             print_r($model->errors);
-            return $this->render('update', [
+            return $this->render('/update', [
                         'model' => $model,
             ]);
         }

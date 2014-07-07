@@ -2,24 +2,35 @@
 
 namespace app\modules\event\controllers;
 
-use yii\web\Controller;
+use Yii;
 use app\modules\event\models\Event;
+use app\modules\event\models\Search;
+use app\components\MyController;
 
-class EventController extends Controller {
+class EventController extends MyController {
 
-    public function actionIndex() {
-        $model = Event::findOne(1);
-        print_r($model->moreAttributes);
-        $post['Event']['descr'] = 'Abkmv2';
-        $post['Event']['moreAttributes']['actors'] = 'Васян ПРО';
-        $post['Event']['moreAttributes']['date_primera'] = 5555123874;
-        //print_r($post);
-        $model->moreAttributes = $post['Event']['moreAttributes'];
-        $model->descr = $post['Event']['descr'];
-        $model->save();
-
-
-        //print_r($model->moreAttributes);   
+    public function init() {
+        parent::init();
+        $this->model = new Event;
+        $this->searchModel = new Search;
     }
+    
+    /**
+     * Lists all Page models.
+     * @return mixed
+     */
+    public function actionIndex() {
+        $search = Yii::$app->request->getQueryParams();
+        $search['notOverdue'] = true;
+        $search['status'] = Event::ACTIVE;
+        
+        $searchModel = $this->searchModel;
+        $dataProvider = $searchModel->search(['Search' => $search]);
+
+        return $this->render('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+        ]);
+    } 
 
 }

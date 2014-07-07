@@ -39,6 +39,14 @@ $this->params['breadcrumbs'][] = '«' . $categoryModel->name . '»';
                 },
             ],
             [
+                'format' => 'text',
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    print_r($model->eavAttributes);
+                    //return $model->eavAttributes;
+                }
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'urlCreator' => function($action, $model, $key, $index) {
                     return Yii::$app->urlManager->createUrl(['admin/event/' . $model->category->alias . '/' . $action. '/' . $model->id]);

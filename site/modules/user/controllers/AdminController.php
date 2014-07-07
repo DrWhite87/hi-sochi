@@ -18,7 +18,6 @@ class AdminController extends MyAdminController {
         parent::init();
         $this->model = new User;
         $this->searchModel = new Search;
-        $this->module->setViewPath(Yii::getAlias('@app') . '\views\user');
     }
 
 }

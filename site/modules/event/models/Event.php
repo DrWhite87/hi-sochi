@@ -34,6 +34,11 @@ class Event extends \yii\db\ActiveRecord {
     const ARCHIVE = 3;
 
     private $_category;
+    //public $category;
+    
+    public $options = [
+        'pageSize' => 5,
+    ];
 
     public function behaviors() {
         return [
@@ -100,7 +105,7 @@ class Event extends \yii\db\ActiveRecord {
             [['date_end'], 'compare', 'operator' => '>', 'compareAttribute' => 'date_begin'],
             [['tags'], 'match', 'pattern' => '/^[\w\s,]+$/u', 'message' => 'В тегах можно использовать только буквы.'],
             [['tags'], 'normalizeTags'],
-            [['moreAttributes', 'image'], 'safe'],
+            [['eavAttributes', 'image'], 'safe'],
         ];
     }
 
@@ -132,18 +137,12 @@ class Event extends \yii\db\ActiveRecord {
 
     /* дополнительные атрибуты события */
 
-    public function getMoreAttributes() {
-        $attributes = $this->category->categoryAttributes;
-        $moreAttrArr = [];
-        foreach ($attributes as $attribute) {
-            $moreAttrArr[$attribute->alias] = $attribute->getValue($this->id)->value;
-        }
-
-        return (object) $moreAttrArr;
+    public function getEavAttributes() {
+        return $this->category->categoryAttributes;
     }
 
-    public function setMoreAttributes($value) {
-        $this->moreAttributes = (object) $value;
+    public function setEavAttributes($value) {
+        $this->eavAttributes = (object) $value;
     }   
 
     public function getImage() {
@@ -160,6 +159,14 @@ class Event extends \yii\db\ActiveRecord {
         return $this->hasOne(EventCategory::className(), ['id' => 'category_id']);
     }
     
+    public function setCategory($value) {
+        $this->category = $value;
+    }
+    
+    public function getComment() {
+        // News has_many comments
+        return new \app\modules\comment\models\Comment;
+    }
     
     
     /* ------------------------ */
@@ -168,20 +175,22 @@ class Event extends \yii\db\ActiveRecord {
 
     public function afterFind() {
         parent::afterFind();
+        EventAttribute::$EVENT_ID = $this->id;
         $this->_oldTags = $this->tags;
     }
     
-    public function beforeSave($insert) {
-        parent::beforeSave($insert);
+
+    public function afterSave($insert) {
+        parent::afterSave($insert);
+        Tags::updateFrequency($this->_oldTags, $this->tags);
         
-        $e = TRUE;
+        $e = TRUE;        
+        EventAttribute::$EVENT_ID = $this->id;
         
-        if (!empty($this->moreAttributes)) {
+        if (!empty($this->eavAttributes)) {
             foreach($this->category->categoryAttributes as $attr){
                 $attr->setScenario('saveAttributeValue');
-                //print_r($attr->scenarios()); die;
-                $attr->eventID = $this->id;
-                $attr->value = $this->moreAttributes->{$attr->alias};
+                $attr->value = $this->eavAttributes->{$attr->alias};
                 if(!$attr->save()){
                     $e = FALSE;
                 }
@@ -189,13 +198,6 @@ class Event extends \yii\db\ActiveRecord {
         }
         
         return $e;
-    }
-
-    public function afterSave($insert) {
-        parent::afterSave($insert);
-        Tags::updateFrequency($this->_oldTags, $this->tags);
-        
-        return TRUE;
     }
 
     public function beforeDelete() {
@@ -220,6 +222,10 @@ class Event extends \yii\db\ActiveRecord {
 
     public function imageUrl($size = null) {        
         return Yii::getAlias('@web') . '/' . Yii::$app->params['imageUploadPath'] . '/event/' . $size . '/' . $this->image->name;
+    }
+    
+    public function findByAlias($alias) {
+        return self::findOne(['alias' => $alias]);
     }
 
 }

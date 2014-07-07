@@ -21,7 +21,7 @@ use app\modules\event\models\Event;
 
     <?= $form->field($model, 'date_begin')->textInput(['class' => 'datepicker', 'value' => !empty($model->date_begin) ? date('d/m/Y', $model->date_begin) : date('d/m/Y', time())]) ?>
 
-    <?= $form->field($model, 'date_end')->textInput(['class' => 'datepicker', 'value' => !empty($model->date_end) ? date('d/m/Y', $model->date_end) : date('d/m/Y', time())]) ?>
+    <?= $form->field($model, 'date_end')->textInput(['class' => 'datepicker', 'value' => !empty($model->date_end) ? date('d/m/Y', $model->date_end) : null]) ?>
 
     <?= $form->field($model, 'category_id')->dropDownList($model->categoryList()); ?>
 
@@ -29,13 +29,13 @@ use app\modules\event\models\Event;
 
     <br />
     <?= $form->field($model, 'image')->fileInput(); ?>
-    <? if ($model->image_id != 0) : ?>
+    <?php if ($model->image_id != 0) : ?>
     <div class="event-content-image event-image">
         <?= Html::img($model->imageUrl('small')) ?>
     </div>
     <br />
-    <? endif; ?> 
-
+    <?php endif; ?> 
+    
     <?=
     $form->field($model, 'descr')->widget(\app\components\extentions\imperavi\Widget::className(), [
         'settings' => [
@@ -59,8 +59,7 @@ use app\modules\event\models\Event;
     
     <?php foreach ($model->category->categoryAttributes as $attr) : ?>
         <?php
-        //$attr->eventID = $model->id;
-        echo $attr->instance($attr->type_id, $model->id)->render('admin/attribute/type/' . $attr->type->name, [
+        echo $attr->eavModel->renderForm('attribute/type/' . $attr->type->name, [
             'attr' => $attr,
             'model' => $model,
         ]);

@@ -33,35 +33,38 @@ class EventAttribute extends \yii\db\ActiveRecord {
 
     public $viewPath = '@app/views/event/';
     public $_value;
-    public $eventID;
+    public static $EVENT_ID;
+    
+    public function getEavModel() {
 
-    public function instance($type = null, $eventID = null) {
-        if (!empty($eventID))
-            $this->eventID = $eventID;
-
-        switch ($type) {
+        switch ($this->type_id) {
             case self::INT_TYPE:
-                return new EventAttributeInt();
+                $model = new EventAttributeInt();
                 break;
             case self::FLOAT_TYPE:
-                return new EventAttributeFloat();
+                $model = new EventAttributeFloat();
                 break;
             case self::CHAR_TYPE:
-                return new EventAttributeChar();
+                $model = new EventAttributeChar();
                 break;
             case self::DATE_TYPE:
-                return new EventAttributeInt();
+                $model = new EventAttributeDate();
                 break;
             case self::TEXT_TYPE:
-                return new EventAttributeText();
+                $model = new EventAttributeText();
                 break;
             case self::HTML_TYPE:
-                return new EventAttributeText();
+                $model = new EventAttributeText();
                 break;
             case self::CATALOG_TYPE: break;
             default:
                 break;
         }
+        if($m = $model->findOne(['attribute_id' => $this->id, 'event_id' => self::$EVENT_ID])){
+            return $m;
+        }
+        
+        return $model;
     }
 
     public function behaviors() {
@@ -129,35 +132,29 @@ class EventAttribute extends \yii\db\ActiveRecord {
     public function typeList() {
         return \yii\helpers\ArrayHelper::map(EventAttributeType::find()->select(['id', 'label'])->asArray()->all(), 'id', 'label');
     }
-
+    
     public function getValue() {
-        //print_r($this->instance($this->type_id)->findOne(['event_id' =>  $this->eventID, 'attribute_id' => $this->id])); die;
-        return $this->instance($this->type_id)->findOne(['event_id' => $this->eventID, 'attribute_id' => $this->id])->value;
+        return $this->eavModel->value;
     }
 
     public function setValue($value) {
         return $this->value = $value;
     }
 
-    public function getEventID() {
-        return Yii::$app->controller->model->id;
-    }
-
     public function beforeSave($insert) {
         parent::beforeSave($insert);
         if ($this->scenario == 'saveAttributeValue') {
-            if (!$this->saveValue())
+            if (!$this->saveValue()){               
                 return FALSE;
+            }
         }
         return true;
     }
 
     public function saveValue() {
 
-        $model = $this->instance($this->type_id);
-        if ($m = $model->findOne(['attribute_id' => $this->id, 'event_id' => $this->eventID])) {
-            $model = $m;
-        }
+        $model = $this->eavModel;
+        
         if (empty($this->value)) {
             if ($this->required) {
                 $this->addError($this->alias, Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => $this->name]));
@@ -168,10 +165,11 @@ class EventAttribute extends \yii\db\ActiveRecord {
             }
         }
         $model->value = $this->value;
-        $model->event_id = $this->eventID;
+        $model->event_id = self::$EVENT_ID;
         $model->attribute_id = $this->id;
 
         if (!$model->save()) {
+             print_r($model->errors);
             $this->addError($this->alias, str_replace('Value', $this->name, $model->errors['value'][0]));
             return FALSE;
         }

@@ -59,7 +59,6 @@ class AdminController extends MyAdminController {
         parent::init();
         $this->model = new News;
         $this->searchModel = new Search;
-        $this->module->setViewPath(Yii::getAlias('@app') . '\views\news');
     }
 
 }

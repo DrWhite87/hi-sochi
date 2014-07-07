@@ -574,6 +574,11 @@ ul.pagination > li:last-child > span {
     height: 125px;
 }
 
+.news-index .news-index-news-anons-box{
+    height: 100px;
+    overflow: hidden;
+}
+
 .news-index .news-index-news-all{
     right: 0;
     bottom: 0;
@@ -683,6 +688,119 @@ ul.pagination > li:last-child > span {
 .news-comment-content{
     padding: 10px;
     background: #eee;
+}
+
+/* event Index */
+
+.content .event-index{
+    width: 580px;
+    border: #374368 solid 4px;
+    overflow: hidden;
+}
+
+.event-index .event-index-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #374368;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.event-index .event-index-anons-img{
+    width: 160px;
+}
+
+.event-index .event-view-index-img-box{
+    width: 160px;
+    height: 122px;
+    overflow: hidden;
+    float: left;
+}
+
+.event-index ul{
+    list-style-type: none;
+    margin: 5px 10px 15px;
+    padding: 0;
+}
+
+.event-index .event-index-event-box{
+    margin: 4px 10px 10px 6px;
+}
+
+.event-index .event-index-event-box a{
+    float: left;
+}
+
+.event-index .event-index-event-title{
+    margin-top: 5px;
+}
+
+.event-index .event-index-event-title a{
+    font-size: 18px;
+    color: #374368;
+}
+
+.event-index .event-index-event-descr{
+    float: right;
+    width: 374px;
+    text-align: justify;
+    position: relative;
+    height: 125px;
+}
+
+.event-index .event-index-event-descr-box{
+    height: 100px;
+    overflow: hidden;
+}
+
+.event-index .event-index-event-all{
+    right: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.event-index .event-index-event-all a{
+    color: #374368;
+}
+
+.event-index ul li{
+    overflow: hidden;
+}
+
+.event-index ul li.line{
+    border-bottom: 1px #c8c8c8 dotted;
+    margin: 20px 10px 0 6px;
+}
+
+
+/* event view */
+
+.content .event-view {
+    width: 580px;
+    border: #374368 solid 4px;
+    /* margin-top: 25px; */
+    overflow: hidden;
+}
+
+.event-view .event-view-title{
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #374368;
+    color: #FFF;
+    padding: 0 0 5px 5px;
+}
+
+.event-view .event-view-event-content {
+    text-align: justify;
+    position: relative;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.event-view .event-view-content-img{
+    width: 160px;
+    float: left;
+    margin: 0 10px 5px 0;
 }
 
 .errors-validate{

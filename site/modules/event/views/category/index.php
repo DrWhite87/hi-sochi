@@ -29,6 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'alias',
+            [
+                'format' => 'text',
+                'attribute' => 'event_count',
+                'value' => function($model) {
+                    return count($model->events);
+                },
+            ],
             'descr:text',
             [
                 'class' => 'yii\grid\ActionColumn',
