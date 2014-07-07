@@ -23,50 +23,6 @@ use app\modules\event\models\attributes\EventAttributeInt,
  */
 class EventAttribute extends \yii\db\ActiveRecord {
 
-    const INT_TYPE = 1;
-    const FLOAT_TYPE = 2;
-    const CHAR_TYPE = 3;
-    const DATE_TYPE = 4;
-    const TEXT_TYPE = 5;
-    const HTML_TYPE = 6;
-    const CATALOG_TYPE = 7;
-
-    public $viewPath = '@app/views/event/';
-    public $_value;
-    public static $EVENT_ID;
-    
-    public function getEavModel() {
-
-        switch ($this->type_id) {
-            case self::INT_TYPE:
-                $model = new EventAttributeInt();
-                break;
-            case self::FLOAT_TYPE:
-                $model = new EventAttributeFloat();
-                break;
-            case self::CHAR_TYPE:
-                $model = new EventAttributeChar();
-                break;
-            case self::DATE_TYPE:
-                $model = new EventAttributeDate();
-                break;
-            case self::TEXT_TYPE:
-                $model = new EventAttributeText();
-                break;
-            case self::HTML_TYPE:
-                $model = new EventAttributeText();
-                break;
-            case self::CATALOG_TYPE: break;
-            default:
-                break;
-        }
-        if($m = $model->findOne(['attribute_id' => $this->id, 'event_id' => self::$EVENT_ID])){
-            return $m;
-        }
-        
-        return $model;
-    }
-
     public function behaviors() {
         return [
             'alias' => [
@@ -131,52 +87,6 @@ class EventAttribute extends \yii\db\ActiveRecord {
 
     public function typeList() {
         return \yii\helpers\ArrayHelper::map(EventAttributeType::find()->select(['id', 'label'])->asArray()->all(), 'id', 'label');
-    }
-    
-    public function getValue() {
-        return $this->eavModel->value;
-    }
-
-    public function setValue($value) {
-        return $this->value = $value;
-    }
-
-    public function beforeSave($insert) {
-        parent::beforeSave($insert);
-        if ($this->scenario == 'saveAttributeValue') {
-            if (!$this->saveValue()){               
-                return FALSE;
-            }
-        }
-        return true;
-    }
-
-    public function saveValue() {
-
-        $model = $this->eavModel;
-        
-        if (empty($this->value)) {
-            if ($this->required) {
-                $this->addError($this->alias, Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => $this->name]));
-                return FALSE;
-            } else {
-                $model->delete();
-                return;
-            }
-        }
-        $model->value = $this->value;
-        $model->event_id = self::$EVENT_ID;
-        $model->attribute_id = $this->id;
-
-        if (!$model->save()) {
-             print_r($model->errors);
-            $this->addError($this->alias, str_replace('Value', $this->name, $model->errors['value'][0]));
-            return FALSE;
-        }
-
-        return TRUE;
-//                print_r($tmpModel->type_id);
-//                print_r($model->errors);
     }
 
 }

@@ -105,7 +105,6 @@ class Event extends \yii\db\ActiveRecord {
             [['date_end'], 'compare', 'operator' => '>', 'compareAttribute' => 'date_begin'],
             [['tags'], 'match', 'pattern' => '/^[\w\s,]+$/u', 'message' => 'В тегах можно использовать только буквы.'],
             [['tags'], 'normalizeTags'],
-            [['eavAttributes', 'image'], 'safe'],
         ];
     }
 
@@ -137,14 +136,6 @@ class Event extends \yii\db\ActiveRecord {
 
     /* дополнительные атрибуты события */
 
-    public function getEavAttributes() {
-        return $this->category->categoryAttributes;
-    }
-
-    public function setEavAttributes($value) {
-        $this->eavAttributes = (object) $value;
-    }   
-
     public function getImage() {
         // News has_one Image
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
@@ -175,29 +166,15 @@ class Event extends \yii\db\ActiveRecord {
 
     public function afterFind() {
         parent::afterFind();
-        EventAttribute::$EVENT_ID = $this->id;
         $this->_oldTags = $this->tags;
     }
     
 
     public function afterSave($insert) {
         parent::afterSave($insert);
-        Tags::updateFrequency($this->_oldTags, $this->tags);
-        
-        $e = TRUE;        
-        EventAttribute::$EVENT_ID = $this->id;
-        
-        if (!empty($this->eavAttributes)) {
-            foreach($this->category->categoryAttributes as $attr){
-                $attr->setScenario('saveAttributeValue');
-                $attr->value = $this->eavAttributes->{$attr->alias};
-                if(!$attr->save()){
-                    $e = FALSE;
-                }
-            }
-        }
-        
-        return $e;
+        Tags::updateFrequency($this->_oldTags, $this->tags);       
+       
+        return TRUE;
     }
 
     public function beforeDelete() {

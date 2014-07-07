@@ -20,7 +20,7 @@ class AttributeController extends \app\components\MyAdminController {
         parent::init();
         $this->model = new EventAttribute;
         $this->searchModel = new AttributeSearch;
-        $this->module->setViewPath(Yii::getAlias('@app') . '\views\event\admin');
+        $this->module->setViewPath(Yii::getAlias('@app') . '\modules\\' . $this->module->id . '\views\attribute');
     }
 
     /**
@@ -36,7 +36,7 @@ class AttributeController extends \app\components\MyAdminController {
         $searchModel = $this->searchModel;
         $dataProvider = $searchModel->search(['AttributeSearch' => $search]);
 
-        return $this->render('index', [
+        return $this->render('/index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'categoryModel' => $categorModel,
@@ -56,7 +56,7 @@ class AttributeController extends \app\components\MyAdminController {
             if($model->save())
                 return $this->redirect('admin/event-category-attributes/' . $category);
         } else {
-            return $this->render('create', [
+            return $this->render('/create', [
                         'model' => $model,
                         'category' => $category,
             ]);
@@ -75,7 +75,7 @@ class AttributeController extends \app\components\MyAdminController {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('admin/event-category-attributes/' . $category);
         } else {
-            return $this->render('update', [
+            return $this->render('/update', [
                         'model' => $model,
                         'category' => $category,
             ]);

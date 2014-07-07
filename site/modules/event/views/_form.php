@@ -53,18 +53,6 @@ use app\modules\event\models\Event;
     ?>
 
     <?= $form->field($model, 'tags')->textInput(['maxlength' => 255]) ?>
-    <br />
-    <?= Html::label('Дополнительные поля') ?>
-    <br /><br />
-    
-    <?php foreach ($model->category->categoryAttributes as $attr) : ?>
-        <?php
-        echo $attr->eavModel->renderForm('attribute/type/' . $attr->type->name, [
-            'attr' => $attr,
-            'model' => $model,
-        ]);
-        ?>
-    <?php endforeach; ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

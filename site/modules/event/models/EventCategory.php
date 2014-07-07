@@ -58,20 +58,10 @@ class EventCategory extends \yii\db\ActiveRecord {
     }
 
     /* возвращает атрибуты категории */
-
-    public function getCategoryAttributes() {
-        return $this->hasMany(EventAttribute::className(), ['category_id' => 'id']);
-    }
     
     public function getEvents() {
         return $this->hasMany(Event::className(), ['category_id' => 'id']);
     }
-
-    public function setCategoryAttributes($value) {
-        return $this->categoryAttributes = $value;
-    }
-    
-
     
     public static function findByAlias($alias) {
         return self::findOne(['alias' => $alias]);

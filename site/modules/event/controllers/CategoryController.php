@@ -20,6 +20,6 @@ class CategoryController extends \app\components\MyAdminController {
         parent::init();
         $this->model = new EventCategory;
         $this->searchModel = new CategorySearch;
-        $this->module->setViewPath(Yii::getAlias('@app') . '\views\event\admin');
+        $this->module->setViewPath(Yii::getAlias('@app') . '\modules\\' . $this->module->id . '\views\category');
     }    
 }
